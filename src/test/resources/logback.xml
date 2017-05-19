@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false">
+
+	<!-- 缩短日志格式 -->
+	<property name="outPattern" value="[%-5p] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%C:%L] - %m%n" />
+	<!-- 文件历史数 -->
+	<property name="maxHistory" value="30" />
+	<!--编码-->
+	<property name="charSet" value="UTF-8" />
+
+	<!-- logback -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${outPattern}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/temp/logs/my.log</file>
+		<prudent>false</prudent>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>/temp/logs/my.log.%d{yyyy-MM-dd}
+			</fileNamePattern>
+			<maxHistory>${maxHistory}</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${outPattern}</pattern>
+		</encoder>
+	</appender>
+	
+	<root level="INFO">
+		<if condition='!"${devMode}".equals("false")'>
+			<then>
+				<appender-ref ref="CONSOLE" />
+			</then>
+		</if>
+		<appender-ref ref="FILE" />
+	</root>
+
+</configuration>
